@@ -1,15 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+// import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { MantineProvider } from '@mantine/core';
+import { QueryClient, QueryClientProvider, } from 'react-query'
+
+
+// Create a client
+const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+
+
+    <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+
+    </MantineProvider>
+
   </React.StrictMode>
 );
+
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
