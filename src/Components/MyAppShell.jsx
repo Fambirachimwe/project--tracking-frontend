@@ -9,7 +9,7 @@ const useStyles = createStyles((theme) => ({
     wrapper: {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
         width: '100vw',
-        height: '100vh',
+        // height: '100vh',
         padding: theme.spacing.lg,
 
     },
