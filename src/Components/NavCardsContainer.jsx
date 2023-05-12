@@ -2,7 +2,7 @@ import { createStyles, Group, Paper, SimpleGrid, Text, rem, Modal } from '@manti
 
 
 import { useQuery } from 'react-query';
-import { getAllProjects, getNotCompletedTask, getTaskByStatus } from '../uitl/api';
+import { getAllProjects, getAllTasks, getNotCompletedTask, getTaskByStatus } from '../uitl/api';
 import { Loader } from '@mantine/core';
 
 
@@ -42,43 +42,49 @@ const useStyles = createStyles((theme) => ({
 export default function NavCardsContainer() {
   const { classes } = useStyles();
 
-  const current = new Date();
-  const date = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`;
-
-  // console.log(date)
-
-
+  const allTasks = useQuery('tasks', getAllTasks);
   const totalProjects = useQuery('projects', getAllProjects);
+  const completedTasks = allTasks?.data?.data?.tasks?.filter(task => {
+    return task.status === "Completed"
+  })
 
-  // useQuery(['todo', 5], ...)
-  // useQuery(['todos', todoId], () => fetchTodoById(todoId))
-  const completedTasks = useQuery(['completedTasks', 'Completed'], () => getTaskByStatus('Completed'));
-  const todoTasks = useQuery(['todoTasks', 'Todo'], () => getTaskByStatus('Todo'));
-  const inCompleteTasks = useQuery(['incompleteTasks', 'Incomplete'], () => getTaskByStatus('Incomplete'));
+  console.log(allTasks)
 
-  const notCompletedTasks = useQuery('notCompleted', getNotCompletedTask)
-  const overdue = notCompletedTasks?.data?.data?.data.filter((task) => {
-    return task.due_date < date
+  const inCompleteTasks = allTasks?.data?.data?.tasks?.filter(task => {
+    return task.status === "Incomplete"
   });
 
 
-  var _projects = totalProjects?.data?.data?.data?.length > 0 ? totalProjects?.data?.data?.data?.length : 0;
-  var _completed = completedTasks?.data?.data?.data?.length > 0 ? completedTasks?.data?.data?.data?.length : 0;
-  var _incomplete = inCompleteTasks?.data?.data?.data?.length > 0 ? inCompleteTasks?.data?.data?.data?.length : 0;
-  var _overdue = overdue?.length;
+  const current = Date.now();
+  const _overDueTasks = allTasks?.data?.data?.tasks?.filter(task => {
+    if (task.dueDate < current) return task
+  })
+
+  // console.log(_overDueTasks)
+
+
+
+  var _projects = totalProjects?.data?.data?.projects?.length > 0 ? totalProjects?.data?.data?.projects?.length : 0;
+  var _completed = completedTasks?.length > 0 ? completedTasks?.length : 0;
+  var _incomplete = inCompleteTasks?.length > 0 ? inCompleteTasks?.length : 0;
+
+
+  var _overdue = _overDueTasks?.length > 0 ? _overDueTasks?.length : 0;
+
+
 
   const _data = [
     {
       title: "Total Projects",
       // icon: <IconUserPlus />,
       value: `${_projects}`,
-      diff: 20
+      // diff: 20
     },
     {
       title: "Completed Tasks",
       // icon: <IconUserPlus />,
       value: `${_completed}`,
-      diff: 20
+      // diff: 20
     }
     , {
       title: "Incomplete Tasks",
@@ -96,7 +102,7 @@ export default function NavCardsContainer() {
 
   // console.log(totalProjects.isLoading);
 
-  if (totalProjects.isLoading || completedTasks.isLoading || todoTasks.isLoading) {
+  if (totalProjects?.isLoading || completedTasks?.isLoading) {
     return (
       // render a loader to the page 
       <Modal centered opened={true} >

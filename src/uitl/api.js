@@ -7,13 +7,13 @@ const BASE_URL = process.env.PRODUCTION_URL;
 
 export const getAllProjects = async () => {
     // the all the projects from the  deployed api 
-    const projects = await axios.get(`${process.env.REACT_APP_BASE_URL_PRODUCTION_URL}/projects?populate=*&sort[0]=id`);
+    const projects = await axios.get(`${process.env.REACT_APP_BASE_URL_PRODUCTION_URL}/projects`);
     return projects
 }
 
 // get all tasks 
 export const getAllTasks = async () => {
-    const tasks = await axios.get(`${BASE_URL}/tasks`);
+    const tasks = await axios.get(`${process.env.REACT_APP_BASE_URL_PRODUCTION_URL}/tasks`);
     return tasks;
 }
 
@@ -21,12 +21,12 @@ export const getAllTasks = async () => {
 // /api/:pluralApiId?filters[field][operator]=value
 
 export const getTaskByStatus = async (status) => {
-    const tasks = await axios.get(`${process.env.REACT_APP_BASE_URL_PRODUCTION_URL}/tasks?filters[status][$eq]=${status}`);
+    const tasks = await axios.get(`${process.env.REACT_APP_BASE_URL_PRODUCTION_URL}/tasks`);
     return tasks;
 }
 
 export const getNotCompletedTask = async () => {
-    const tasks = await axios.get(`${process.env.REACT_APP_BASE_URL_PRODUCTION_URL}/tasks?filters[status][$ne]=Completed`);
+    const tasks = await axios.get(`${process.env.REACT_APP_BASE_URL_PRODUCTION_URL}/tasks`);
     return tasks;
 }
 

@@ -48,7 +48,7 @@ export default function AllProjectsTable() {
 
     // const projects = allProjects?.data?.data?.data?.map()
 
-    const _data = allProjects?.data?.data?.data;
+    const _data = allProjects?.data?.data?.projects;
 
     console.log(_data)
 
@@ -60,38 +60,46 @@ export default function AllProjectsTable() {
     const rows = _data?.map((row) => {
         return (
 
-            <tr key={row.title + nanoid(5)}>
-                <td>
 
-                    {row.id}
-
-                </td>
-                <td>{row.attributes?.project_name}</td>
-                <td>
-
-                    {row.attributes?.location}
-
-                </td>
-                <td>{row.attributes?.scope}</td>
+            // <Link className={classes.linkStyle} to={`/project/${row.id}`}>
+            <tr key={row._id} >
+                <td>{row?.jobNumber}</td>
+                <td>{row?.project_name}</td>
+                <td>{row?.location} </td>
+                <td>{row?.scope}</td>
                 <td>{
-                    // row.attributes?.leader?.data?.attributes?.username.charAt(0).toUpperCase() + row.attributes?.leader?.data?.attributes?.username.slice(1)
-
-
-                    row.attributes?.leaders?.data?.map(leader => {
-                        return `${leader?.attributes?.username} `
+                    row.leaders?.map(leader => {
+                        return `${leader?.username} `
                     })
                 }</td>
-                <td>{row.attributes?.client}</td>
+                <td>{row?.client}</td>
                 <td>
+                    {
+                        row.progress === 100 ? (
+                            <Badge color="yellow">{"Completed"}</Badge>
+                        ) : row.status === "Ongoing" ? (
+                            <Badge color="teal">{row?.status}</Badge>
+                        )
 
-                    <Badge color="teal">{row.attributes?.status}</Badge>
+                            :
 
+                            row.status === "Completed" ? (
+                                <Badge color="yellow">{row?.status}</Badge>
+                            ) : (<Badge color="red">{row?.status}</Badge>)
+
+
+
+
+                    }
 
                 </td>
                 <td>
                     <Group position="apart">
                         <Text fz="xs" c="teal" weight={700}>
-                            {row.attributes?.progress}%
+                            {/* {
+                                console.log(row?.progress)
+                            } */}
+                            {row?.progress}%
                         </Text>
 
                     </Group>
@@ -99,21 +107,26 @@ export default function AllProjectsTable() {
                         classNames={{ bar: classes.progressBar }}
                         sections={[
                             {
-                                value: row.attributes.progress,
+                                value: row.progress,
                                 color: theme.colorScheme === 'dark' ? theme.colors.teal[9] : theme.colors.teal[6],
                             }
 
                         ]}
                     />
                 </td>
+
             </tr>
+            // </Link>
+
+
+
+
 
 
 
 
         );
     });
-
     return (
         <ScrollArea>
             <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
