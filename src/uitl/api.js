@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 
-const BASE_URL = process.env.PRODUCTION_URL;
+// const BASE_URL = process.env.PRODUCTION_URL;
 // get all projects
 
 export const getAllProjects = async () => {
