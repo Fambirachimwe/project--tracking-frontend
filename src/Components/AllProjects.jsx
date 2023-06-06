@@ -69,7 +69,7 @@ export default function AllProjectsTable() {
                 <td>{row?.scope}</td>
                 <td>{
                     row.leaders?.map(leader => {
-                        return `${leader?.username} `
+                        return `${leader?.lastName?.charAt(0).toUpperCase() + leader?.lastName?.slice(1)},  `
                     })
                 }</td>
                 <td>{row?.client}</td>
