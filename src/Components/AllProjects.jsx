@@ -87,9 +87,6 @@ export default function AllProjectsTable() {
                                 <Badge color="yellow">{row?.status}</Badge>
                             ) : (<Badge color="red">{row?.status}</Badge>)
 
-
-
-
                     }
 
                 </td>

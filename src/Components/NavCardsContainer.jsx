@@ -51,7 +51,7 @@ export default function NavCardsContainer() {
   console.log(allTasks)
 
   const inCompleteTasks = allTasks?.data?.data?.tasks?.filter(task => {
-    return task.status === "Incomplete"
+    return task.status === "Pending" || task.status === "Ongoing"
   });
 
 
